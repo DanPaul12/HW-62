@@ -28,3 +28,17 @@ class Playlist:
             self.tail = new_node
 
     def delete_song(self, title):
+        current = self.head
+        while current:
+            if current.title == title:
+                if current == self.head:
+                    self.head.next = self.head
+                if current == self.tail:
+                    self.tail.prev = self.tail
+                if current.prev:
+                    current.prev.next = current
+                if current.next:
+                    current.next.prev = current.prev
+                return "song deleted"
+            current = current.next
+        return "song not deleted"
