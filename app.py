@@ -1,3 +1,5 @@
+
+
 class Song:
     def __init__(self, id, title, artist, duration):
         self.id = id
@@ -30,15 +32,43 @@ class Playlist:
     def delete_song(self, title):
         current = self.head
         while current:
-            if current.title == title:
+            if current.song.title == title:
                 if current == self.head:
-                    self.head.next = self.head
+                    self.head = current.next
                 if current == self.tail:
-                    self.tail.prev = self.tail
+                    self.tail = current.prev
                 if current.prev:
-                    current.prev.next = current
+                    current.prev.next = current.next
                 if current.next:
                     current.next.prev = current.prev
                 return "song deleted"
             current = current.next
         return "song not deleted"
+    
+    def get_song(self, title):
+        current = self.head
+        while current:
+            if current.song.title == title:
+                print(current.song.title + ' by ' + current.song.artist)
+                return current.song
+            current = current.next
+        return "song not found"
+    
+    def sort_songs(self):
+        sortinglist = []
+        current = self.head
+        while current:
+            sortinglist.append(current.song)
+            current = current.next
+        newlist = sorted(sortinglist, key=lambda song: song.title)
+        for song in newlist:
+            print(song.title + ' by ' + song.artist)
+    
+playlist = Playlist()
+playlist.add_song(1, "Hello", "Adele", "3:05")
+playlist.add_song(2, "My Generation", "The Who", "2:05")
+playlist.add_song(3, "Crocodile Rock", "Elton John", "3:55")
+playlist.delete_song('My Generation')
+playlist.get_song('Hello')
+playlist.sort_songs()
+
