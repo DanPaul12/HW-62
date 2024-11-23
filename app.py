@@ -64,7 +64,8 @@ class Playlist:
             current = current.next
         newlist = sorted(sortinglist, key=lambda song: song.title)
         for song in newlist:
-            print(song.title + ' by ' + song.artist)
+            return song
+        
     
 playlist = Playlist()
 playlist.add_song(1, "Hello", "Adele", "3:05")
