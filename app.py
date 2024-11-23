@@ -91,6 +91,8 @@ def getsongs():
     for song in songs:
         return jsonify(song.title + " by " + song.artist)
 
-@app.route('/playlist' methods= ['POST'])
-def add_song():
-    
+@app.route('/addsong', methods= ['POST'])
+def create_song():
+    data = request.json
+    playlist.add_song(data['id'], data['name'], data['artist'], data['duration'])
+    return 'song added'
