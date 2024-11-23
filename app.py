@@ -63,8 +63,7 @@ class Playlist:
             sortinglist.append(current.song)
             current = current.next
         newlist = sorted(sortinglist, key=lambda song: song.title)
-        for song in newlist:
-            return song
+        return newlist
         
     
 playlist = Playlist()
@@ -89,4 +88,9 @@ def deletesong(title):
 @app.route('/playlist', methods = ['GET'])
 def getsongs():
     songs = playlist.sort_songs()
-    return jsonify(songs)
+    for song in songs:
+        return jsonify(song.title + " by " + song.artist)
+
+@app.route('/playlist' methods= ['POST'])
+def add_song():
+    
