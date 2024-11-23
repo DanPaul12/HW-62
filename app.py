@@ -1,4 +1,6 @@
+from flask import Flask, request, jsonify
 
+app = Flask(__name__)
 
 class Song:
     def __init__(self, id, title, artist, duration):
@@ -72,3 +74,18 @@ playlist.delete_song('My Generation')
 playlist.get_song('Hello')
 playlist.sort_songs()
 
+
+@app.route('/songs/<title>', methods = ['GET'])
+def getsong(title):
+    song = playlist.get_song(title)
+    return jsonify(song)
+
+@app.route('/songs/<title>', methods = ['DELETE'])
+def deletesong(title):
+    song = playlist.delete_song(title)
+    return jsonify('song deleted')
+
+@app.route('/playlist', methods = ['GET'])
+def getsongs():
+    songs = playlist.sort_songs()
+    return jsonify(songs)
