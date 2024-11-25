@@ -64,6 +64,14 @@ class Playlist:
             current = current.next
         return None
 
+    def get_song2(self, title):
+        current = self.head
+        while current:
+            if current.song.title == title:
+                return current.song
+            current = current.next
+        return None
+
     def sort_songs(self):
         sortinglist = []
         current = self.head
@@ -124,9 +132,23 @@ def delete_song_from_playlist(name, title):
         return jsonify({"message": f"Song '{title}' deleted from playlist '{name}'"}), 200
     return jsonify({"error": response}), 404
 
+@app.route('/playlists/<name>/songs/<title>', methods=['PUT'])
+def update_song_in_playlist(name, title):
+    if name not in playlists:
+        return jsonify({"error": "Playlist not found"}), 404
+    playlist = playlists[name]
+    song = playlist.get_song2(title)
+    if song:
+        data = request.json
+        song.id= data['id']
+        song.title =data['title']
+        song.artist =data['artist']
+        song.duration =data['duration']
+        return jsonify({"message":"song updated"}), 200
+    else:
+        return jsonify({"message":"song updated"}), 404
 
 if __name__ == '__main__':
-    # Seed Data
     playlists["Favorites"] = Playlist("Favorites")
     playlists["Favorites"].add_song(1, "Hello", "Adele", "3:05")
     playlists["Favorites"].add_song(2, "My Generation", "The Who", "2:05")
